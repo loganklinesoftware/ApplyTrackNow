@@ -119,3 +119,48 @@ tableBody.addEventListener("click", function (event) {
     ui.renderApplications(tracker.getApplications());
   }
 });
+
+const openModalBtn = document.getElementById("openModalBtn");
+const applicationModal = document.getElementById("applicationModal");
+const cancelModalBtn = document.getElementById("cancelModalBtn");
+
+openModalBtn.addEventListener("click", function () {
+  applicationModal.classList.remove("hidden");
+});
+
+cancelModalBtn.addEventListener("click", function () {
+  applicationModal.classList.add("hidden");
+});
+
+const submitAppBtn = document.getElementById("submitApplicationBtn");
+
+submitAppBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  const company = document.getElementById("companyInput").value;
+  const role = document.getElementById("roleInput").value;
+  const status = document.getElementById("statusInput").value;
+  const dateApplied = document.getElementById("dateAppliedInput").value;
+  const recruiter = document.getElementById("recruiterInput").value;
+  const interviewDate = document.getElementById("interviewDateInput").value;
+  const jobUrl = document.getElementById("jobUrlInput").value;
+  const notes = document.getElementById("notesInput").value;
+
+  const newApplication = new JobApplication(
+    company,
+    role,
+    status,
+    dateApplied,
+    recruiter,
+    interviewDate,
+    jobUrl,
+    notes,
+  );
+
+  tracker.addApplication(newApplication);
+
+  ui.renderApplications(tracker.getApplications());
+
+  applicationModal.classList.add("hidden");
+
+  applicationForm.reset();
+});

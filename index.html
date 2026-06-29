@@ -20,7 +20,7 @@
 
       <div class="header-actions">
         <button class="theme-btn">☀️</button>
-        <button class="add-btn">+ Add Application</button>
+        <button id="openModalBtn" class="add-btn">+ Add Application</button>
       </div>
     </header>
 
@@ -84,6 +84,85 @@
         </tbody>
       </table>
     </section>
+
+
+    <div id="applicationModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Add Application</h2>
+
+            <form id="applicationForm">
+
+                <label>Company</label>
+                <input
+                type="text"
+                id="companyInput"
+                required
+                >
+
+                <label>Role</label>
+                <input
+                type="text"
+                id="roleInput"
+                required
+                >
+
+                <label>Status</label>
+                <select id="statusInput">
+                    <option>Applied</option>
+                    <option>Interview</option>
+                    <option>Offer</option>
+                    <option>Rejected</option>
+                </select>
+
+                <label>Date Applied</label>
+                <input
+                    type="date"
+                    id="dateAppliedInput"
+                    required
+                >
+
+                <label>Recruiter</label>
+                <input
+                    type="text"
+                    id="recruiterInput"
+                >
+
+                <label>Interview Date</label>
+                <input
+                    type="date"
+                    id="interviewDateInput"
+                >
+
+                <label>Job URL</label>
+                <input
+                    type="url"
+                    id="jobUrlInput"
+                >
+
+                <label>Notes</label>
+                <textarea
+                    id="notesInput"
+                    rows="4"
+                ></textarea>
+
+                <div class="modal-buttons">
+                    <button
+                        type="button"
+                        id="cancelModalBtn"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="submitApplicationBtn"
+                    >
+                        Add Application
+                    </button>
+                </div>
+            </form>
+        </div> 
+    </div>
 
   </main>
 
