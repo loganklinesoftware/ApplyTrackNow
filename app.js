@@ -49,7 +49,6 @@ class UIManager {
     tableBody.innerHTML = "";
 
     for (let application of applications) {
-
       let row = document.createElement("tr");
 
       let cellCompany = document.createElement("td");
@@ -71,9 +70,13 @@ class UIManager {
       let cellFollow = document.createElement("td");
       cellFollow.textContent = "Today";
       row.appendChild(cellFollow);
-      
+
       let cellAction = document.createElement("td");
-      cellAction.textContent = "DELETE";
+      let deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.classList.add("delete-btn");
+      deleteButton.dataset.id = application.id;
+      cellAction.appendChild(deleteButton);
       row.appendChild(cellAction);
 
       tableBody.append(row);
@@ -81,7 +84,7 @@ class UIManager {
   }
 }
 
-// testing
+// testing data
 
 const tracker = new ApplicationTracker();
 
@@ -106,3 +109,13 @@ console.log(tracker.getApplications());
 console.log(tracker.getApplications());
 const ui = new UIManager();
 ui.renderApplications(tracker.getApplications());
+
+// EVENT LISTENERS
+const tableBody = document.getElementById("applicationsTableBody");
+tableBody.addEventListener("click", function (event) {
+  if (event.target.classList.contains("delete-btn")) {
+    const buttonId = event.target.dataset.id;
+    tracker.deleteApplication(buttonId);
+    ui.renderApplications(tracker.getApplications());
+  }
+});
