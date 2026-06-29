@@ -43,6 +43,44 @@ class ApplicationTracker {
   }
 }
 
+class UIManager {
+  renderApplications(applications) {
+    let tableBody = document.getElementById("applicationsTableBody");
+    tableBody.innerHTML = "";
+
+    for (let application of applications) {
+
+      let row = document.createElement("tr");
+
+      let cellCompany = document.createElement("td");
+      cellCompany.textContent = application.company;
+      row.appendChild(cellCompany);
+
+      let cellRole = document.createElement("td");
+      cellRole.textContent = application.role;
+      row.appendChild(cellRole);
+
+      let cellStatus = document.createElement("td");
+      cellStatus.textContent = application.status;
+      row.appendChild(cellStatus);
+
+      let cellDate = document.createElement("td");
+      cellDate.textContent = application.dateApplied;
+      row.appendChild(cellDate);
+
+      let cellFollow = document.createElement("td");
+      cellFollow.textContent = "Today";
+      row.appendChild(cellFollow);
+      
+      let cellAction = document.createElement("td");
+      cellAction.textContent = "DELETE";
+      row.appendChild(cellAction);
+
+      tableBody.append(row);
+    }
+  }
+}
+
 // testing
 
 const tracker = new ApplicationTracker();
@@ -64,5 +102,7 @@ const amazon = new JobApplication(
 tracker.addApplication(google);
 tracker.addApplication(amazon);
 console.log(tracker.getApplications());
-tracker.deleteApplication(google.id);
-console.log(tracker.getApplications())
+// tracker.deleteApplication(google.id);
+console.log(tracker.getApplications());
+const ui = new UIManager();
+ui.renderApplications(tracker.getApplications());

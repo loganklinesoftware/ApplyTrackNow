@@ -1,13 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ApplyTrackNow</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApplyTrackNow</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    
-    <h1>ApplyTrackNow</h1>
+  <main class="app-shell">
 
-    <script src="app.js"></script>
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo">💼</div>
+        <div>
+          <h1>ApplyTrackNow</h1>
+          <p>Track your job applications</p>
+        </div>
+      </div>
 
+      <div class="header-actions">
+        <button class="theme-btn">☀️</button>
+        <button class="add-btn">+ Add Application</button>
+      </div>
+    </header>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <p>Total Applications</p>
+        <h2 id="totalApplications">0</h2>
+        <span>Applications submitted</span>
+      </div>
+
+      <div class="stat-card">
+        <p>Interviews</p>
+        <h2 id="interviewsCount">0</h2>
+        <span>Interview invitations</span>
+      </div>
+
+      <div class="stat-card">
+        <p>Offers</p>
+        <h2 id="offersCount">0</h2>
+        <span>Job offers received</span>
+      </div>
+
+      <div class="stat-card">
+        <p>Response Rate</p>
+        <h2 id="responseRate">0%</h2>
+        <span>Overall response rate</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <nav class="tabs">
+        <button class="tab active">All Applications</button>
+        <button class="tab">Active</button>
+        <button class="tab">Need Follow-up</button>
+        <button class="tab">Resumes</button>
+      </nav>
+
+      <div class="filters">
+        <select id="statusFilter">
+          <option value="All">All Statuses</option>
+          <option value="Applied">Applied</option>
+          <option value="Interview">Interview</option>
+          <option value="Offer">Offer</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Applied</th>
+            <th>Next Follow-up</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="applicationsTableBody">
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
 </body>
+</html>
 </html>
