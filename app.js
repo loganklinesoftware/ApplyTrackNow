@@ -82,6 +82,37 @@ class UIManager {
       tableBody.append(row);
     }
   }
+
+  updateStats(applications) {
+    const totalApplications = applications.length;
+    const totalApplicationsPresentation =
+      document.getElementById("totalApplications");
+    totalApplicationsPresentation.textContent = totalApplications;
+
+    const numInterviews = applications.filter(
+      (application) => application.status == "Interview",
+    ).length;
+    const interviewsCountPresentation =
+      document.getElementById("interviewsCount");
+    interviewsCountPresentation.textContent = numInterviews;
+
+    const numOffers = applications.filter(
+      (application) => application.status == "Offer",
+    ).length;
+    const offerCountPresentation = document.getElementById("offersCount");
+    offerCountPresentation.textContent = numOffers;
+
+    const numRejections = applications.filter(
+      (application) => application.status == "Rejected",
+    ).length;
+    const rejectionCountPresentation =
+      document.getElementById("rejectionsCount");
+    rejectionCountPresentation.textContent = numRejections;
+
+    const numResponses = numInterviews + numOffers + numRejections;
+    const responseRatePresentation = document.getElementById("responseRate");
+    responseRatePresentation.textContent = `${totalApplications === 0 ? 0 : Math.round((numResponses / totalApplications) * 100)}%`;
+  }
 }
 
 // testing data
@@ -117,6 +148,7 @@ tableBody.addEventListener("click", function (event) {
     const buttonId = event.target.dataset.id;
     tracker.deleteApplication(buttonId);
     ui.renderApplications(tracker.getApplications());
+    ui.updateStats(tracker.getApplications());
   }
 });
 
@@ -161,6 +193,8 @@ submitAppBtn.addEventListener("click", function (event) {
   ui.renderApplications(tracker.getApplications());
 
   applicationModal.classList.add("hidden");
+
+  ui.updateStats(tracker.getApplications());
 
   applicationForm.reset();
 });
