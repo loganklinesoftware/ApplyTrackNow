@@ -98,79 +98,106 @@
 
             <form id="applicationForm">
 
-                <label>Company</label>
-                <input
+    <div class="form-row">
+        <div class="form-group">
+            <label>Company</label>
+            <input
                 type="text"
                 id="companyInput"
-                
-                >
+            >
+        </div>
 
-                <label>Role</label>
-                <input
+        <div class="form-group">
+            <label>Role</label>
+            <input
                 type="text"
                 id="roleInput"
-                
-                >
+            >
+        </div>
+    </div>
 
-                <label>Status</label>
-                <select id="statusInput">
-                    <option>Applied</option>
-                    <option>Interview</option>
-                    <option>Offer</option>
-                    <option>Rejected</option>
-                </select>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Status</label>
+            <select id="statusInput">
+                <option>Applied</option>
+                <option>Interview</option>
+                <option>Offer</option>
+                <option>Rejected</option>
+            </select>
+        </div>
 
-                <label>Date Applied</label>
-                <input
-                    type="date"
-                    id="dateAppliedInput"
-                    
-                >
+        <div class="form-group">
+            <label>Date Applied</label>
+            <input
+                type="date"
+                id="dateAppliedInput"
+            >
+        </div>
+    </div>
 
-                <label>Recruiter</label>
-                <input
-                    type="text"
-                    id="recruiterInput"
-                >
+    <div class="form-row">
+        <div class="form-group">
+            <label>Recruiter</label>
+            <input
+                type="text"
+                id="recruiterInput"
+            >
+        </div>
 
-                <label>Interview Date</label>
-                <input
-                    type="date"
-                    id="interviewDateInput"
-                >
+        <div class="form-group">
+            <label>Interview Date</label>
+            <input
+                type="date"
+                id="interviewDateInput"
+            >
+        </div>
+    </div>
 
-                <label>Next Follow Up</label>
-<input type="date" id="nextFollowUpInput" />
+    <div class="form-row">
+        <div class="form-group">
+            <label>Next Follow Up</label>
+            <input
+                type="date"
+                id="nextFollowUpInput"
+            >
+        </div>
 
-                <label>Job URL</label>
-                <input
-                    type="url"
-                    id="jobUrlInput"
-                    placeholder="https://comany.com/job"
-                >
+        <div class="form-group">
+            <label>Job URL</label>
+            <input
+                type="url"
+                id="jobUrlInput"
+                placeholder="https://company.com/job"
+            >
+        </div>
+    </div>
 
-                <label>Notes</label>
-                <textarea
-                    id="notesInput"
-                    rows="4"
-                ></textarea>
+    <div class="form-group">
+        <label>Notes</label>
+        <textarea
+            id="notesInput"
+            rows="4"
+        ></textarea>
+    </div>
 
-                <div class="modal-buttons">
-                    <button
-                        type="button"
-                        id="cancelModalBtn"
-                    >
-                        Cancel
-                    </button>
+    <div class="modal-buttons">
+        <button
+            type="button"
+            id="cancelModalBtn"
+        >
+            Cancel
+        </button>
 
-                    <button
-                        type="submit"
-                        id="submitApplicationBtn"
-                    >
-                        Add Application
-                    </button>
-                </div>
-            </form>
+        <button
+            type="submit"
+            id="submitApplicationBtn"
+        >
+            Add Application
+        </button>
+    </div>
+
+</form>
         </div> 
     </div>
 
@@ -179,4 +206,4 @@
   <script src="app.js"></script>
 </body>
 </html>
-</html>
+<!-- </html> -->
