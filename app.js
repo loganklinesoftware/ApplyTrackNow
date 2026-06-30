@@ -110,13 +110,29 @@ class UIManager {
   }
 }
 
+class StorageService {
+  static saveApplications(applications) {
+    localStorage.setItem("applications", JSON.stringify(applications));
+  }
+
+  static loadApplications() {
+    const savedApplications = localStorage.getItem("applications");
+
+    if (savedApplications === null) {
+      return [];
+    }
+
+    return JSON.parse(savedApplications);
+  }
+}
+
 // APP SETUP
 const tracker = new ApplicationTracker();
 const ui = new UIManager();
 
 function refreshUI() {
   const applications = tracker.getApplications();
-  
+
   ui.renderApplications(applications);
   ui.updateStats(applications);
 }
@@ -136,9 +152,12 @@ function loadSampleData() {
   );
 
   tracker.addApplication(google);
+
   tracker.addApplication(amazon);
 }
-loadSampleData();
+// loadSampleData();
+
+tracker.applications = StorageService.loadApplications();
 refreshUI();
 // EVENT LISTENERS
 const tableBody = document.getElementById("applicationsTableBody");
@@ -146,6 +165,7 @@ tableBody.addEventListener("click", function (event) {
   if (event.target.classList.contains("delete-btn")) {
     const buttonId = event.target.dataset.id;
     tracker.deleteApplication(buttonId);
+    StorageService.saveApplications(tracker.getApplications());
     refreshUI();
   }
 });
@@ -189,6 +209,7 @@ applicationForm.addEventListener("submit", function (event) {
   );
 
   tracker.addApplication(newApplication);
+  StorageService.saveApplications(tracker.getApplications());
   refreshUI();
   applicationModal.classList.add("hidden");
   applicationForm.reset();
