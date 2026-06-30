@@ -1,3 +1,4 @@
+// CLASSES
 class JobApplication {
   constructor(
     company,
@@ -6,6 +7,7 @@ class JobApplication {
     dateApplied,
     recruiter = "",
     interviewDate = "",
+    nextFollowUp = "",
     jobUrl = "",
     notes = "",
   ) {
@@ -18,6 +20,7 @@ class JobApplication {
 
     this.recruiter = recruiter;
     this.interviewDate = interviewDate;
+    this.nextFollowUp = nextFollowUp;
     this.jobUrl = jobUrl;
     this.notes = notes;
   }
@@ -44,35 +47,27 @@ class ApplicationTracker {
 }
 
 class UIManager {
+  createCell(text) {
+    const cell = document.createElement("td");
+    cell.textContent = text;
+    return cell;
+  }
+
   renderApplications(applications) {
-    let tableBody = document.getElementById("applicationsTableBody");
+    const tableBody = document.getElementById("applicationsTableBody");
     tableBody.innerHTML = "";
 
     for (let application of applications) {
-      let row = document.createElement("tr");
+      const row = document.createElement("tr");
 
-      let cellCompany = document.createElement("td");
-      cellCompany.textContent = application.company;
-      row.appendChild(cellCompany);
+      row.appendChild(this.createCell(application.company));
+      row.appendChild(this.createCell(application.role));
+      row.appendChild(this.createCell(application.status));
+      row.appendChild(this.createCell(application.dateApplied));
+      row.appendChild(this.createCell(application.nextFollowUp || "-"));
 
-      let cellRole = document.createElement("td");
-      cellRole.textContent = application.role;
-      row.appendChild(cellRole);
-
-      let cellStatus = document.createElement("td");
-      cellStatus.textContent = application.status;
-      row.appendChild(cellStatus);
-
-      let cellDate = document.createElement("td");
-      cellDate.textContent = application.dateApplied;
-      row.appendChild(cellDate);
-
-      let cellFollow = document.createElement("td");
-      cellFollow.textContent = "Today";
-      row.appendChild(cellFollow);
-
-      let cellAction = document.createElement("td");
-      let deleteButton = document.createElement("button");
+      const cellAction = document.createElement("td");
+      const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
       deleteButton.classList.add("delete-btn");
       deleteButton.dataset.id = application.id;
@@ -90,20 +85,20 @@ class UIManager {
     totalApplicationsPresentation.textContent = totalApplications;
 
     const numInterviews = applications.filter(
-      (application) => application.status == "Interview",
+      (application) => application.status === "Interview",
     ).length;
     const interviewsCountPresentation =
       document.getElementById("interviewsCount");
     interviewsCountPresentation.textContent = numInterviews;
 
     const numOffers = applications.filter(
-      (application) => application.status == "Offer",
+      (application) => application.status === "Offer",
     ).length;
     const offerCountPresentation = document.getElementById("offersCount");
     offerCountPresentation.textContent = numOffers;
 
     const numRejections = applications.filter(
-      (application) => application.status == "Rejected",
+      (application) => application.status === "Rejected",
     ).length;
     const rejectionCountPresentation =
       document.getElementById("rejectionsCount");
@@ -115,40 +110,43 @@ class UIManager {
   }
 }
 
-// testing data
-
+// APP SETUP
 const tracker = new ApplicationTracker();
-
-const google = new JobApplication(
-  "Google",
-  "Software Engineer Intern",
-  "Applied",
-  "2026-06-26",
-);
-
-const amazon = new JobApplication(
-  "Amazon",
-  "Frontend Engineer",
-  "Applied",
-  "2026-06-27",
-);
-
-tracker.addApplication(google);
-tracker.addApplication(amazon);
-console.log(tracker.getApplications());
-// tracker.deleteApplication(google.id);
-console.log(tracker.getApplications());
 const ui = new UIManager();
-ui.renderApplications(tracker.getApplications());
 
+function refreshUI() {
+  const applications = tracker.getApplications();
+  
+  ui.renderApplications(applications);
+  ui.updateStats(applications);
+}
+// SAMPLE DATA
+function loadSampleData() {
+  const google = new JobApplication(
+    "Google",
+    "Software Engineer Intern",
+    "Interview",
+    "2026-06-26",
+  );
+  const amazon = new JobApplication(
+    "Amazon",
+    "Frontend Engineer",
+    "Applied",
+    "2026-06-27",
+  );
+
+  tracker.addApplication(google);
+  tracker.addApplication(amazon);
+}
+loadSampleData();
+refreshUI();
 // EVENT LISTENERS
 const tableBody = document.getElementById("applicationsTableBody");
 tableBody.addEventListener("click", function (event) {
   if (event.target.classList.contains("delete-btn")) {
     const buttonId = event.target.dataset.id;
     tracker.deleteApplication(buttonId);
-    ui.renderApplications(tracker.getApplications());
-    ui.updateStats(tracker.getApplications());
+    refreshUI();
   }
 });
 
@@ -164,9 +162,9 @@ cancelModalBtn.addEventListener("click", function () {
   applicationModal.classList.add("hidden");
 });
 
-const submitAppBtn = document.getElementById("submitApplicationBtn");
+const applicationForm = document.getElementById("applicationForm");
 
-submitAppBtn.addEventListener("click", function (event) {
+applicationForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const company = document.getElementById("companyInput").value;
   const role = document.getElementById("roleInput").value;
@@ -174,6 +172,7 @@ submitAppBtn.addEventListener("click", function (event) {
   const dateApplied = document.getElementById("dateAppliedInput").value;
   const recruiter = document.getElementById("recruiterInput").value;
   const interviewDate = document.getElementById("interviewDateInput").value;
+  const nextFollowUp = document.getElementById("nextFollowUpInput").value;
   const jobUrl = document.getElementById("jobUrlInput").value;
   const notes = document.getElementById("notesInput").value;
 
@@ -184,17 +183,13 @@ submitAppBtn.addEventListener("click", function (event) {
     dateApplied,
     recruiter,
     interviewDate,
+    nextFollowUp,
     jobUrl,
     notes,
   );
 
   tracker.addApplication(newApplication);
-
-  ui.renderApplications(tracker.getApplications());
-
+  refreshUI();
   applicationModal.classList.add("hidden");
-
-  ui.updateStats(tracker.getApplications());
-
   applicationForm.reset();
 });
