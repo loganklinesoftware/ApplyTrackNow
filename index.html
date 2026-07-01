@@ -1,209 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ApplyTrackNow</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <main class="app-shell">
-
-    <header class="app-header">
-      <div class="brand">
-        <div class="logo">💼</div>
-        <div>
-          <h1>ApplyTrackNow</h1>
-          <p>Track your job applications</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ApplyTrackNow</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div class="brand">
+          <div class="logo">💼</div>
+          <div>
+            <h1>ApplyTrackNow</h1>
+            <p>Track your job applications</p>
+          </div>
         </div>
-      </div>
 
-      <div class="header-actions">
-        <button class="theme-btn">☀️</button>
-        <button id="openModalBtn" class="add-btn">+ Add Application</button>
-      </div>
-    </header>
+        <div class="header-actions">
+          <button class="theme-btn">☀️</button>
+          <button id="openModalBtn" class="add-btn">+ Add Application</button>
+        </div>
+      </header>
 
-    <section class="stats-grid">
-      <div class="stat-card">
-        <p>Total Applications</p>
-        <h2 id="totalApplications">0</h2>
-        <span>Applications submitted</span>
-      </div>
+      <section class="stats-grid">
+        <div class="stat-card">
+          <p>Total Applications</p>
+          <h2 id="totalApplications">0</h2>
+          <span>Applications submitted</span>
+        </div>
 
-      <div class="stat-card">
-        <p>Interviews</p>
-        <h2 id="interviewsCount">0</h2>
-        <span>Interview invitations</span>
-      </div>
+        <div class="stat-card">
+          <p>Interviews</p>
+          <h2 id="interviewsCount">0</h2>
+          <span>Interview invitations</span>
+        </div>
 
-      <div class="stat-card">
-        <p>Offers</p>
-        <h2 id="offersCount">0</h2>
-        <span>Job offers received</span>
-      </div>
+        <div class="stat-card">
+          <p>Offers</p>
+          <h2 id="offersCount">0</h2>
+          <span>Job offers received</span>
+        </div>
 
-<div class="stat-card">
-  <p>Rejections</p>
-  <h2 id="rejectionsCount">0</h2>
-  <span>Applications rejected</span>
-</div>
+        <div class="stat-card">
+          <p>Rejections</p>
+          <h2 id="rejectionsCount">0</h2>
+          <span>Applications rejected</span>
+        </div>
 
-      <div class="stat-card">
-        <p>Response Rate</p>
-        <h2 id="responseRate">0%</h2>
-        <span>Overall response rate</span>
-      </div>
-    </section>
+        <div class="stat-card">
+          <p>Response Rate</p>
+          <h2 id="responseRate">0%</h2>
+          <span>Overall response rate</span>
+        </div>
+      </section>
 
-    <section class="panel">
-      <nav class="tabs">
-        <button class="tab active">All Applications</button>
-        <button class="tab">Active</button>
-        <button class="tab">Need Follow-up</button>
-        <button class="tab">Resumes</button>
-      </nav>
+      <section class="panel">
+        <nav class="tabs">
+          <button class="tab active">All Applications</button>
+          <button class="tab">Active</button>
+          <button class="tab">Need Follow-up</button>
+          <button class="tab">Resumes</button>
+        </nav>
 
-      <div class="filters">
-        <select id="statusFilter">
-          <option value="All">All Statuses</option>
-          <option value="Applied">Applied</option>
-          <option value="Interview">Interview</option>
-          <option value="Offer">Offer</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-      </div>
+        <div class="filters">
+          <select id="statusFilter">
+            <option value="All">All Statuses</option>
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Offer">Offer</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
 
-      <table class="applications-table">
-        <thead>
-          <tr>
-            <th>Company</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Applied</th>
-            <th>Next Follow-up</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <table class="applications-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Applied</th>
+              <th>Next Follow-up</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-        <tbody id="applicationsTableBody">
-        </tbody>
-      </table>
-    </section>
+          <tbody id="applicationsTableBody"></tbody>
+        </table>
+      </section>
 
-
-    <div id="applicationModal" class="modal hidden">
+      <div id="applicationModal" class="modal hidden">
         <div class="modal-content">
-            <h2>Add Application</h2>
+          <h2 id="modalTitle">Add Application</h2>
 
-            <form id="applicationForm">
+          <form id="applicationForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Company</label>
+                <input type="text" id="companyInput" />
+              </div>
 
-    <div class="form-row">
-        <div class="form-group">
-            <label>Company</label>
-            <input
-                type="text"
-                id="companyInput"
-            >
+              <div class="form-group">
+                <label>Role</label>
+                <input type="text" id="roleInput" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Status</label>
+                <select id="statusInput">
+                  <option>Applied</option>
+                  <option>Interview</option>
+                  <option>Offer</option>
+                  <option>Rejected</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Date Applied</label>
+                <input type="date" id="dateAppliedInput" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Recruiter</label>
+                <input type="text" id="recruiterInput" />
+              </div>
+
+              <div class="form-group">
+                <label>Interview Date</label>
+                <input type="date" id="interviewDateInput" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Next Follow Up</label>
+                <input type="date" id="nextFollowUpInput" />
+              </div>
+
+              <div class="form-group">
+                <label>Job URL</label>
+                <input
+                  type="url"
+                  id="jobUrlInput"
+                  placeholder="https://company.com/job"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Notes</label>
+              <textarea id="notesInput" rows="4"></textarea>
+            </div>
+
+            <div class="modal-buttons">
+              <button type="button" id="cancelModalBtn">Cancel</button>
+
+              <button type="submit" id="submitApplicationBtn">
+                Add Application
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
+    </main>
 
-        <div class="form-group">
-            <label>Role</label>
-            <input
-                type="text"
-                id="roleInput"
-            >
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label>Status</label>
-            <select id="statusInput">
-                <option>Applied</option>
-                <option>Interview</option>
-                <option>Offer</option>
-                <option>Rejected</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Date Applied</label>
-            <input
-                type="date"
-                id="dateAppliedInput"
-            >
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label>Recruiter</label>
-            <input
-                type="text"
-                id="recruiterInput"
-            >
-        </div>
-
-        <div class="form-group">
-            <label>Interview Date</label>
-            <input
-                type="date"
-                id="interviewDateInput"
-            >
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label>Next Follow Up</label>
-            <input
-                type="date"
-                id="nextFollowUpInput"
-            >
-        </div>
-
-        <div class="form-group">
-            <label>Job URL</label>
-            <input
-                type="url"
-                id="jobUrlInput"
-                placeholder="https://company.com/job"
-            >
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Notes</label>
-        <textarea
-            id="notesInput"
-            rows="4"
-        ></textarea>
-    </div>
-
-    <div class="modal-buttons">
-        <button
-            type="button"
-            id="cancelModalBtn"
-        >
-            Cancel
-        </button>
-
-        <button
-            type="submit"
-            id="submitApplicationBtn"
-        >
-            Add Application
-        </button>
-    </div>
-
-</form>
-        </div> 
-    </div>
-
-  </main>
-
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>
 <!-- </html> -->

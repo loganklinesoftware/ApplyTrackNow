@@ -313,3 +313,13 @@ body {
   background: #111827;
   color: white;
 }
+
+.edit-btn {
+  border: none;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 8px;
+}

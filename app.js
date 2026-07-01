@@ -44,6 +44,27 @@ class ApplicationTracker {
   getApplications() {
     return this.applications;
   }
+
+  findApplication(id) {
+    return this.applications.find((application) => application.id === id);
+  }
+
+  updateApplication(id, updatedData) {
+    const application = this.findApplication(id);
+    if (!application) {
+      return;
+    }
+
+    application.company = updatedData.company;
+    application.role = updatedData.role;
+    application.status = updatedData.status;
+    application.dateApplied = updatedData.dateApplied;
+    application.recruiter = updatedData.recruiter;
+    application.interviewDate = updatedData.interviewDate;
+    application.nextFollowUp = updatedData.nextFollowUp;
+    application.jobUrl = updatedData.jobUrl;
+    application.notes = updatedData.notes;
+  }
 }
 
 class UIManager {
@@ -67,11 +88,22 @@ class UIManager {
       row.appendChild(this.createCell(application.nextFollowUp || "-"));
 
       const cellAction = document.createElement("td");
+
+      // Edit button
+      const editButton = document.createElement("button");
+      editButton.textContent = "Edit";
+      editButton.classList.add("edit-btn");
+      editButton.dataset.id = application.id;
+
+      // Delete button
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
       deleteButton.classList.add("delete-btn");
       deleteButton.dataset.id = application.id;
+
+      cellAction.appendChild(editButton);
       cellAction.appendChild(deleteButton);
+
       row.appendChild(cellAction);
 
       tableBody.append(row);
@@ -130,6 +162,11 @@ class StorageService {
 const tracker = new ApplicationTracker();
 const ui = new UIManager();
 
+let editingApplicationId = null;
+
+tracker.applications = StorageService.loadApplications();
+refreshUI();
+
 function refreshUI() {
   const applications = tracker.getApplications();
 
@@ -157,11 +194,37 @@ function loadSampleData() {
 }
 // loadSampleData();
 
-tracker.applications = StorageService.loadApplications();
-refreshUI();
 // EVENT LISTENERS
 const tableBody = document.getElementById("applicationsTableBody");
 tableBody.addEventListener("click", function (event) {
+  if (event.target.classList.contains("edit-btn")) {
+    const buttonId = event.target.dataset.id;
+    const application = tracker.findApplication(buttonId);
+
+    if (!application) {
+      return;
+    }
+
+    editingApplicationId = buttonId;
+
+    document.getElementById("modalTitle").textContent = "Edit Application";
+    document.getElementById("submitApplicationBtn").textContent =
+      "Update Application";
+    document.getElementById("companyInput").value = application.company;
+    document.getElementById("roleInput").value = application.role;
+    document.getElementById("statusInput").value = application.status;
+    document.getElementById("dateAppliedInput").value = application.dateApplied;
+    document.getElementById("recruiterInput").value = application.recruiter;
+    document.getElementById("interviewDateInput").value =
+      application.interviewDate;
+    document.getElementById("nextFollowUpInput").value =
+      application.nextFollowUp;
+    document.getElementById("jobUrlInput").value = application.jobUrl;
+    document.getElementById("notesInput").value = application.notes;
+
+    applicationModal.classList.remove("hidden");
+  }
+
   if (event.target.classList.contains("delete-btn")) {
     const buttonId = event.target.dataset.id;
     tracker.deleteApplication(buttonId);
@@ -173,16 +236,21 @@ tableBody.addEventListener("click", function (event) {
 const openModalBtn = document.getElementById("openModalBtn");
 const applicationModal = document.getElementById("applicationModal");
 const cancelModalBtn = document.getElementById("cancelModalBtn");
-
+const applicationForm = document.getElementById("applicationForm");
 openModalBtn.addEventListener("click", function () {
+  editingApplicationId = null;
+  applicationForm.reset();
+  document.getElementById("modalTitle").textContent = "Add Application";
+  document.getElementById("submitApplicationBtn").textContent =
+    "Add Application";
   applicationModal.classList.remove("hidden");
 });
 
 cancelModalBtn.addEventListener("click", function () {
+  editingApplicationId = null;
+  applicationForm.reset();
   applicationModal.classList.add("hidden");
 });
-
-const applicationForm = document.getElementById("applicationForm");
 
 applicationForm.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -196,7 +264,7 @@ applicationForm.addEventListener("submit", function (event) {
   const jobUrl = document.getElementById("jobUrlInput").value;
   const notes = document.getElementById("notesInput").value;
 
-  const newApplication = new JobApplication(
+  const applicationData = {
     company,
     role,
     status,
@@ -206,9 +274,28 @@ applicationForm.addEventListener("submit", function (event) {
     nextFollowUp,
     jobUrl,
     notes,
-  );
+  };
 
-  tracker.addApplication(newApplication);
+  if (editingApplicationId === null) {
+    const newApplication = new JobApplication(
+      company,
+      role,
+      status,
+      dateApplied,
+      recruiter,
+      interviewDate,
+      nextFollowUp,
+      jobUrl,
+      notes,
+    );
+
+    tracker.addApplication(newApplication);
+  } else {
+    tracker.updateApplication(editingApplicationId, applicationData);
+
+    editingApplicationId = null;
+  }
+
   StorageService.saveApplications(tracker.getApplications());
   refreshUI();
   applicationModal.classList.add("hidden");
