@@ -194,7 +194,8 @@ const tracker = new ApplicationTracker();
 const ui = new UIManager();
 
 let editingApplicationId = null;
-let currentStatusFilter = "ALL";
+let currentStatusFilter = "All";
+let currentSearchTerm = "";
 
 tracker.applications = StorageService.loadApplications();
 refreshUI();
@@ -206,6 +207,14 @@ function refreshUI() {
   if (currentStatusFilter !== "All") {
     filteredApplications = applications.filter(
       (application) => application.status === currentStatusFilter,
+    );
+  }
+
+  if (currentSearchTerm !== "") {
+    filteredApplications = filteredApplications.filter(
+      (applications) =>
+        applications.company.toLowerCase().includes(currentSearchTerm) ||
+        applications.role.toLowerCase().includes(currentSearchTerm),
     );
   }
 
@@ -236,8 +245,16 @@ function loadSampleData() {
 // EVENT LISTENERS
 
 const statusFilter = document.getElementById("statusFilter");
+const searchInput = document.getElementById("searchInput");
 
-statusFilter.addEventListener("click", function (event) {
+searchInput.addEventListener("input", function (event) {
+  // const searchTerm = searchInput.text;
+    currentSearchTerm = searchInput.value.toLowerCase().trim();
+    refreshUI();
+  //   console.log(currentSearchTerm);
+});
+
+statusFilter.addEventListener("change", function (event) {
   currentStatusFilter = event.target.value;
   refreshUI();
   return;
@@ -349,3 +366,5 @@ applicationForm.addEventListener("submit", function (event) {
   applicationModal.classList.add("hidden");
   applicationForm.reset();
 });
+
+refreshUI();
