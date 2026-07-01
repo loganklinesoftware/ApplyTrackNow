@@ -64,19 +64,27 @@
         </nav>
 
         <div class="filters">
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search applications..."
-            />
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search applications..."
+          />
 
-        <!-- <div class="filters"> -->
+          <!-- <div class="filters"> -->
           <select id="statusFilter">
             <option value="All">All</option>
             <option value="Applied">Applied</option>
             <option value="Interview">Interview</option>
             <option value="Offer">Offer</option>
             <option value="Rejected">Rejected</option>
+          </select>
+
+          <select id="sortFilter">
+            <option value="newest">Newest Applied</option>
+            <option value="oldest">Oldest Applied</option>
+            <option value="companyAZ">Company A-Z</option>
+            <option value="companyZA">Company Z-A</option>
+            <option value="followUpSoonest">Follow-up Soonest</option>
           </select>
         </div>
 

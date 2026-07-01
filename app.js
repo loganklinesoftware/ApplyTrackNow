@@ -192,7 +192,7 @@ class UIManager {
       return "follow-up-overdue";
     }
 
-    if ((followUpDate.getTime() === today.getTime())) {
+    if (followUpDate.getTime() === today.getTime()) {
       return "follow-up-today";
     }
 
@@ -224,6 +224,8 @@ let editingApplicationId = null;
 let currentStatusFilter = "All";
 let currentSearchTerm = "";
 let currentTab = "all";
+let currentSort = "newest";
+
 tracker.applications = StorageService.loadApplications();
 refreshUI();
 
@@ -265,6 +267,42 @@ function refreshUI() {
     });
   }
 
+  filteredApplications = [...filteredApplications];
+
+  if (currentSort === "newest") {
+    filteredApplications.sort(
+      (a, b) => new Date(b.dateApplied) - new Date(a.dateApplied),
+    );
+  }
+
+  if (currentSort === "oldest") {
+    filteredApplications.sort(
+      (a, b) => new Date(a.dateApplied) - new Date(b.dateApplied),
+    );
+    console.log(filteredApplications)
+  }
+
+  if (currentSort === "companyAZ") {
+    filteredApplications.sort((a, b) => a.company.localeCompare(b.company));
+    console.log(filteredApplications)
+
+  }
+
+  if (currentSort === "companyZA") {
+    filteredApplications.sort((a, b) => b.company.localeCompare(a.company));
+    console.log(filteredApplications)
+
+  }
+
+  if (currentSort === "followUpSoonest") {
+    filteredApplications.sort((a, b) => {
+      if (!a.nextFollowUp) return 1;
+      if (!b.nextFollowUp) return -1;
+
+      return new Date(a.nextFollowUp) - new Date(b.nextFollowUp);
+    });
+  }
+
   ui.renderApplications(filteredApplications);
   ui.updateStats(applications);
 }
@@ -294,11 +332,18 @@ function loadSampleData() {
 const statusFilter = document.getElementById("statusFilter");
 const searchInput = document.getElementById("searchInput");
 const tabButtons = document.querySelectorAll(".tab");
+const sortfFilter = document.getElementById("sortFilter");
 // const activeTab = document.
 // tabButtons.addEventListener("click", function (event) {
 //   // if (event.target.dataset.tab ===)
 //   console.log(event.target.textContent);
 // });
+
+sortfFilter.addEventListener("change", function (event) {
+  currentSort = event.target.value;
+  console.log(currentSort)
+  refreshUI();
+});
 
 tabButtons.forEach((button) => {
   button.addEventListener("click", () => {
