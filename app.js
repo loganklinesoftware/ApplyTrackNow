@@ -194,14 +194,22 @@ const tracker = new ApplicationTracker();
 const ui = new UIManager();
 
 let editingApplicationId = null;
+let currentStatusFilter = "ALL";
 
 tracker.applications = StorageService.loadApplications();
 refreshUI();
 
 function refreshUI() {
   const applications = tracker.getApplications();
+  let filteredApplications = applications;
 
-  ui.renderApplications(applications);
+  if (currentStatusFilter !== "All") {
+    filteredApplications = applications.filter(
+      (application) => application.status === currentStatusFilter,
+    );
+  }
+
+  ui.renderApplications(filteredApplications);
   ui.updateStats(applications);
 }
 // SAMPLE DATA
@@ -226,6 +234,15 @@ function loadSampleData() {
 // loadSampleData();
 
 // EVENT LISTENERS
+
+const statusFilter = document.getElementById("statusFilter");
+
+statusFilter.addEventListener("click", function (event) {
+  currentStatusFilter = event.target.value;
+  refreshUI();
+  return;
+});
+
 const tableBody = document.getElementById("applicationsTableBody");
 tableBody.addEventListener("click", function (event) {
   if (event.target.classList.contains("edit-btn")) {
