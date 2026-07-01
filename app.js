@@ -95,6 +95,11 @@ class UIManager {
 
     for (let application of applications) {
       const row = document.createElement("tr");
+      const followUpClass = this.getFollowUpClass(application.nextFollowUp);
+
+      if (followUpClass !== "") {
+        row.classList.add(followUpClass);
+      }
 
       row.appendChild(this.createCell(application.company));
       row.appendChild(this.createCell(application.role));
@@ -170,6 +175,28 @@ class UIManager {
     cell.appendChild(badge);
 
     return cell;
+  }
+
+  getFollowUpClass(nextFollowUp) {
+    if (!nextFollowUp) {
+      return "";
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let followUpDate = new Date(nextFollowUp + "T00:00:00");
+    // followUpDate.setHours(0, 0, 0, 0);
+
+    if (followUpDate < today) {
+      return "follow-up-overdue";
+    }
+
+    if ((followUpDate.getTime() === today.getTime())) {
+      return "follow-up-today";
+    }
+
+    return "";
   }
 }
 
@@ -274,16 +301,16 @@ const tabButtons = document.querySelectorAll(".tab");
 // });
 
 tabButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        if (button.dataset.tab === "resumes") return;
-        // console.log("HIT")
-        currentTab = button.dataset.tab;
-        console.log(currentTab)
-        tabButtons.forEach((btn) => btn.classList.remove("active"))
-        button.classList.add("active");
-        refreshUI();
-    })
-})
+  button.addEventListener("click", () => {
+    if (button.dataset.tab === "resumes") return;
+    // console.log("HIT")
+    currentTab = button.dataset.tab;
+    console.log(currentTab);
+    tabButtons.forEach((btn) => btn.classList.remove("active"));
+    button.classList.add("active");
+    refreshUI();
+  });
+});
 
 searchInput.addEventListener("input", function (event) {
   // const searchTerm = searchInput.text;
