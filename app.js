@@ -225,6 +225,7 @@ let currentStatusFilter = "All";
 let currentSearchTerm = "";
 let currentTab = "all";
 let currentSort = "newest";
+let applicationIdToDelete = null;
 
 tracker.applications = StorageService.loadApplications();
 refreshUI();
@@ -279,19 +280,17 @@ function refreshUI() {
     filteredApplications.sort(
       (a, b) => new Date(a.dateApplied) - new Date(b.dateApplied),
     );
-    console.log(filteredApplications)
+    console.log(filteredApplications);
   }
 
   if (currentSort === "companyAZ") {
     filteredApplications.sort((a, b) => a.company.localeCompare(b.company));
-    console.log(filteredApplications)
-
+    console.log(filteredApplications);
   }
 
   if (currentSort === "companyZA") {
     filteredApplications.sort((a, b) => b.company.localeCompare(a.company));
-    console.log(filteredApplications)
-
+    console.log(filteredApplications);
   }
 
   if (currentSort === "followUpSoonest") {
@@ -333,15 +332,29 @@ const statusFilter = document.getElementById("statusFilter");
 const searchInput = document.getElementById("searchInput");
 const tabButtons = document.querySelectorAll(".tab");
 const sortfFilter = document.getElementById("sortFilter");
-// const activeTab = document.
-// tabButtons.addEventListener("click", function (event) {
-//   // if (event.target.dataset.tab ===)
-//   console.log(event.target.textContent);
-// });
+const deleteModal = document.getElementById("deleteModal");
+const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+cancelDeleteBtn.addEventListener("click", function () {
+  applicationIdToDelete = null;
+  deleteModal.classList.add("hidden");
+});
+
+confirmDeleteBtn.addEventListener("click", function () {
+  if (applicationIdToDelete === null) return;
+
+  tracker.deleteApplication(applicationIdToDelete);
+  StorageService.saveApplications(tracker.getApplications());
+  refreshUI();
+
+  applicationIdToDelete = null;
+  deleteModal.classList.add("hidden");
+});
 
 sortfFilter.addEventListener("change", function (event) {
   currentSort = event.target.value;
-  console.log(currentSort)
+  console.log(currentSort);
   refreshUI();
 });
 
@@ -401,10 +414,22 @@ tableBody.addEventListener("click", function (event) {
   }
 
   if (event.target.classList.contains("delete-btn")) {
-    const buttonId = event.target.dataset.id;
-    tracker.deleteApplication(buttonId);
-    StorageService.saveApplications(tracker.getApplications());
-    refreshUI();
+    applicationIdToDelete = event.target.dataset.id;
+    deleteModal.classList.remove("hidden");
+
+    // const buttonId = event.target.dataset.id;
+
+    // // const confirmed = confirm(
+    // //   "Are you sure you want to delete this application?",
+    // // );
+
+    // // if (!confirmed) {
+    // //   return;
+    // // }
+
+    // tracker.deleteApplication(buttonId);
+    // StorageService.saveApplications(tracker.getApplications());
+    // refreshUI();
   }
 });
 
