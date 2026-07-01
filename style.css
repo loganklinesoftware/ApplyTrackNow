@@ -144,6 +144,7 @@ body {
 
 .applications-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
@@ -161,6 +162,11 @@ body {
   background: #fafafa;
 }
 
+.applications-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 
 /* .status-badge {
@@ -367,4 +373,12 @@ body {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 8px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 16px;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
 }

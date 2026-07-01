@@ -78,6 +78,21 @@ class UIManager {
     const tableBody = document.getElementById("applicationsTableBody");
     tableBody.innerHTML = "";
 
+    if (applications.length === 0) {
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+
+      cell.textContent =
+        "No applications yet. Click + Add Applicaiton to get started.";
+      cell.colSpan = 6;
+      cell.classList.add("empty-state");
+
+      row.appendChild(cell);
+      tableBody.append(row);
+
+      return;
+    }
+
     for (let application of applications) {
       const row = document.createElement("tr");
 
