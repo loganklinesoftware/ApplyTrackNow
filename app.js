@@ -196,7 +196,7 @@ const ui = new UIManager();
 let editingApplicationId = null;
 let currentStatusFilter = "All";
 let currentSearchTerm = "";
-
+let currentTab = "all";
 tracker.applications = StorageService.loadApplications();
 refreshUI();
 
@@ -216,6 +216,26 @@ function refreshUI() {
         applications.company.toLowerCase().includes(currentSearchTerm) ||
         applications.role.toLowerCase().includes(currentSearchTerm),
     );
+  }
+
+  if (currentTab === "active") {
+    filteredApplications = filteredApplications.filter(
+      (application) =>
+        application.status === "Applied" || application.status === "Interview",
+    );
+  }
+
+  if (currentTab === "followup") {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    filteredApplications = filteredApplications.filter((application) => {
+      if (!application.nextFollowUp) return false;
+
+      const followUpDate = new Date(application.nextFollowUp);
+
+      return followUpDate <= today;
+    });
   }
 
   ui.renderApplications(filteredApplications);
@@ -246,11 +266,29 @@ function loadSampleData() {
 
 const statusFilter = document.getElementById("statusFilter");
 const searchInput = document.getElementById("searchInput");
+const tabButtons = document.querySelectorAll(".tab");
+// const activeTab = document.
+// tabButtons.addEventListener("click", function (event) {
+//   // if (event.target.dataset.tab ===)
+//   console.log(event.target.textContent);
+// });
+
+tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        if (button.dataset.tab === "resumes") return;
+        // console.log("HIT")
+        currentTab = button.dataset.tab;
+        console.log(currentTab)
+        tabButtons.forEach((btn) => btn.classList.remove("active"))
+        button.classList.add("active");
+        refreshUI();
+    })
+})
 
 searchInput.addEventListener("input", function (event) {
   // const searchTerm = searchInput.text;
-    currentSearchTerm = searchInput.value.toLowerCase().trim();
-    refreshUI();
+  currentSearchTerm = searchInput.value.toLowerCase().trim();
+  refreshUI();
   //   console.log(currentSearchTerm);
 });
 
