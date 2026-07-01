@@ -161,7 +161,52 @@ body {
   background: #fafafa;
 }
 
+
+
+/* .status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+} */
+
 .status-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 90px;
+
+    padding: 7px 14px;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-applied {
+  background: #bfdbfe;
+  color: #1e3a8a;
+}
+
+.status-interview {
+  background: #fde68a;
+  color: #92400e;
+}
+
+.status-offer {
+  background: #86efac;
+  color: #14532d;
+}
+
+.status-rejected {
+  background: #fca5a5;
+  color: #7f1d1d;
+}
+
+
+/* .status-badge {
   padding: 5px 10px;
   border-radius: 999px;
   font-size: 12px;
@@ -186,7 +231,7 @@ body {
 .status-rejected {
   background: #fee2e2;
   color: #b91c1c;
-}
+} */
 
 .delete-btn {
   border: none;

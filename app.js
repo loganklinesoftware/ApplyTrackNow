@@ -83,7 +83,8 @@ class UIManager {
 
       row.appendChild(this.createCell(application.company));
       row.appendChild(this.createCell(application.role));
-      row.appendChild(this.createCell(application.status));
+      //   row.appendChild(this.createCell(application.status));
+      row.appendChild(this.createStatusCell(application.status));
       row.appendChild(this.createCell(application.dateApplied));
       row.appendChild(this.createCell(application.nextFollowUp || "-"));
 
@@ -139,6 +140,21 @@ class UIManager {
     const numResponses = numInterviews + numOffers + numRejections;
     const responseRatePresentation = document.getElementById("responseRate");
     responseRatePresentation.textContent = `${totalApplications === 0 ? 0 : Math.round((numResponses / totalApplications) * 100)}%`;
+  }
+
+  createStatusCell(status) {
+    const cell = document.createElement("td");
+
+    const badge = document.createElement("span");
+
+    badge.textContent = status;
+
+    badge.classList.add("status-badge");
+    badge.classList.add(`status-${status.toLowerCase()}`);
+
+    cell.appendChild(badge);
+
+    return cell;
   }
 }
 
